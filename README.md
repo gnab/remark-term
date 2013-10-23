@@ -14,4 +14,4 @@ node index
 Navigating to [localhost:3000](http://localhost:3000) will take you to
 a slideshow with a terminal in it.
 
-Only connections from localhost is allowed.
+Only connections from localhost are allowed.
