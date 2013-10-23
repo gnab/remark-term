@@ -1,6 +1,6 @@
 # remark-term
 
-An experiment of integrating term.js within a [remark.js](http://remarkjs.com) slideshow.
+An experiment of integrating [term.js](https://github.com/chjj/term.js) within a [remark.js](http://remarkjs.com) slideshow.
 
 ## Usage
 
