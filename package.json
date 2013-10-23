@@ -1,0 +1,10 @@
+{
+  "name": "term-sample"
+, "version" : "0.0.1"
+, "dependencies": {
+    "express": "*"
+  , "socket.io": "*"
+  , "term.js": "*"
+  , "pty.js": "*"
+  }
+}

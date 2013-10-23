@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+  <head>
+    <title>term.js</title>
+    <!--
+      term.js
+      Copyright (c) 2012-2013, Christopher Jeffrey (MIT License)
+    -->
+    <style>
+      html {
+        background: #555;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        font: 20px/1.5 sans-serif;
+      }
+
+    /*
+      .terminal {
+        float: left;
+        border: #000 solid 5px;
+        font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+        font-size: 11px;
+        color: #f0f0f0;
+        background: #000;
+      }
+
+      .terminal-cursor {
+        color: #000;
+        background: #f0f0f0;
+      }
+    */
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+class: middle, center
+
+# Terminal in a slideshow
+
+---
+
+# Terminal
+
+<p id="title"></p>
+
+<div id="container"></div>
+
+<div style="clear: both"></div>
+
+<p>To prevent the space key and similar to trigger slideshow navigation,
+you may pause navigation before using the above terminal.</p>
+<p>
+  <a href="#" id="pause">Pause</a> |
+  <a href="#" id="resume">Resume</a> navigation
+</p>
+
+---
+
+# Resources
+
+- [https://github.com/chjj/term.js](https://github.com/chjj/term.js)
+    </textarea>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/term.js"></script>
+    <script src="http://gnab.github.io/remark/downloads/remark-0.5.7.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+
+      document.getElementById('pause').onclick = function (e) {
+        slideshow.pause();
+        e.preventDefault();
+      };
+
+      document.getElementById('resume').onclick = function (e) {
+        slideshow.resume();
+        e.preventDefault();
+      };
+
+      window.onload = function() {
+        var socket = io.connect();
+        socket.on('connect', function() {
+          var term = new Terminal({
+            cols: 80,
+            rows: 24,
+            useStyle: true,
+            screenKeys: true
+          });
+
+          term.on('data', function(data) {
+            socket.emit('data', data);
+          });
+
+          term.on('title', function(title) {
+            document.getElementById('title').innerText = title;
+          });
+
+          term.open(document.getElementById('container'));
+
+          term.write('\x1b[31mWelcome to term.js!\x1b[m\r\n');
+
+          socket.on('data', function(data) {
+            term.write(data);
+          });
+
+          socket.on('disconnect', function() {
+            term.destroy();
+          });
+        });
+      };
+    </script>
+  </body>
+</html>
